@@ -196,6 +196,11 @@ void NarcolepticClass::sleep(uint8_t wdt_period) {
 
 // uncalibrated delay
 void NarcolepticClass::delay(uint32_t milliseconds) { // milliseconds is expected to be >= 16
+  delayAdv(milliseconds, 0, 0, 0, 0, 0);
+}
+
+// uncalibrated delay with advanced options
+void NarcolepticClass::delayAdv(uint32_t milliseconds, uint8_t eimsk, uint8_t pcmsk0, uint8_t pcmsk1, uint8_t pcmsk2, uint8_t twie) { // milliseconds is expected to be >= 16
   millisCounter += milliseconds;
   uint32_t sleep_periods = milliseconds / 16;
 
@@ -217,7 +222,7 @@ void NarcolepticClass::delay(uint32_t milliseconds) { // milliseconds is expecte
 #else
     if (i<WDTO_2S) {
 #endif
-      if (sleep_periods & 1) sleep(i);
+      if (sleep_periods & 1) sleepAdv(i, SLEEP_MODE_PWR_DOWN, eimsk, pcmsk0, pcmsk1, pcmsk2, twie);
       i++;
       sleep_periods >>= 1;
     } else {
@@ -229,6 +234,11 @@ void NarcolepticClass::delay(uint32_t milliseconds) { // milliseconds is expecte
 
 // calibrated delay
 void NarcolepticClass::delayCal(uint32_t milliseconds, uint8_t run_calibration) { // milliseconds is expected to be >= 16
+  delayCalAdv(milliseconds, run_calibration, 0, 0, 0, 0, 0);
+}
+
+// calibrated delay with advanced options
+void NarcolepticClass::delayCalAdv(uint32_t milliseconds, uint8_t run_calibration, uint8_t eimsk, uint8_t pcmsk0, uint8_t pcmsk1, uint8_t pcmsk2, uint8_t twie) {
   millisCounter += milliseconds;
   uint32_t microseconds = milliseconds * 1000L;
   static uint16_t watchdogTime_us = 16000;
@@ -258,7 +268,7 @@ void NarcolepticClass::delayCal(uint32_t milliseconds, uint8_t run_calibration) 
 #else
     if (i<WDTO_2S) {
 #endif
-      if (sleep_periods & 1) sleep(i);
+      if (sleep_periods & 1) sleepAdv(i, SLEEP_MODE_PWR_DOWN, eimsk, pcmsk0, pcmsk1, pcmsk2, twie);
       i++;
       sleep_periods >>= 1;
     } else {

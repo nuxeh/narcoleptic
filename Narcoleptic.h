@@ -31,6 +31,8 @@ class NarcolepticClass
   public:
     void delay(uint32_t milliseconds);                             // uncalibrated delay
     void delayCal(uint32_t milliseconds, uint8_t run_calibration); // calibrated delay
+    void delayAdv(uint32_t milliseconds, uint8_t eimsk=0, uint8_t pcmsk0=0, uint8_t pcmsk1=0, uint8_t pcmsk2=0, uint8_t twie=0);                             // uncalibrated delay with advanced options
+    void delayCalAdv(uint32_t milliseconds, uint8_t run_calibration, uint8_t eimsk=0, uint8_t pcmsk0=0, uint8_t pcmsk1=0, uint8_t pcmsk2=0, uint8_t twie=0); // calibrated delay with advanced options
     void sleepAdv(uint8_t wdt_period,uint8_t sleep_mode=SLEEP_MODE_PWR_DOWN,uint8_t eimsk=0,uint8_t pcmsk0=0,uint8_t pcmsk1=0,uint8_t pcmsk2=0,uint8_t twie=0);
     void sleep(uint8_t wdt_period); // WDTO_8S, WDTO_4S, WDTO_2S, WDTO_1S, WDTO_500MS, WDTO_250MS, WDTO_120MS, WDTO_60MS, WDTO_30MS, WDTO_15MS
     uint32_t millis();
